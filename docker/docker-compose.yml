@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  mysql:
+    build: ./mysql
+    container_name: perfectpay_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: perfect_pay
+      MYSQL_USER: perfect_pay
+      MYSQL_PASSWORD: root
+    ports:
+      - "3383:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+  php:
+    build: ./php
+    container_name: perfectpay_php
+    ports:
+      - "83:80"
+    volumes:
+      - ../:/files/www/localhost
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    plataform: linux/x86_64
+    container_name: perfectpay_phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    links:
+      - mysql
+    ports:
+      - 8083:80
+    volumes:
+      - /sessions

@@ -20,7 +20,7 @@ class CreateSaleProductsTable extends Migration
             $table->unsignedFloat('price', 8, 2);
             $table->unsignedSmallInteger('qty');
             $table->set('discount_type', ['percentual', 'value'])->nullable()->comment('Se o desconto é percentual ou valor decrescido.');
-            $table->unsignedFloat('discount', 10, 2)->comment('Se for percentual, multiplica-se no final. Por valor, subtrai-se este valor.');
+            $table->unsignedFloat('discount', 10, 2)->nullable()->comment('Se for percentual, multiplica-se no final. Por valor, subtrai-se este valor.');
             $table->unsignedFloat('total', 10, 2);
             $table->timestamps();
 

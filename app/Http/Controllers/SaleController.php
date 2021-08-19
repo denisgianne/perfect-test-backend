@@ -89,11 +89,8 @@ class SaleController extends Controller
 			return redirect()->route('sales.edit', ['sale' => $sale->id]);
 		}
 
-
-
-
 		$request->validate([
-			'qty'  => ['required', 'min:1']
+			'qty'  => ['required', 'min:1', 'max:10']
 		]);
 
 		$product = Product::find($request->product_id);
