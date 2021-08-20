@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Product;
 use App\Sale;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    private $PAGINATE_ITEMS = 5;
     public function index()
     {
-        $data = [];
-        $data['sales'] = Sale::orderBy('created_at', 'desc')->paginate(10);
-        $data['customers'] = Customer::orderBy('created_at', 'desc')->paginate(10);
-        $data['products'] = Product::orderBy('created_at', 'desc')->paginate(10);
-        return view('dashboard.index', $data);
+        // $status = SaleController::getStatus();
+        $status = [];
+        $sales = Sale::orderBy('created_at', 'desc')->paginate($this->PAGINATE_ITEMS);
+        $sales_by_status = Sale::selectRaw('SUM(total) as total, status, COUNT(*) as qty')->groupBy('status')->paginate($this->PAGINATE_ITEMS);
+        $customers = Customer::orderBy('created_at', 'desc')->paginate($this->PAGINATE_ITEMS);
+        $products = Product::orderBy('created_at', 'desc')->paginate($this->PAGINATE_ITEMS);
+        return view('dashboard.index', compact('sales', 'sales_by_status', 'customers', 'products', 'status'));
     }
 }

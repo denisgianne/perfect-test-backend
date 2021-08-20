@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label for="product">Cliente</label>
                     <select id="products" name="customer_id" class="form-control">
-                        <option selected>Escolha...</option>
+                        <option value="" selected>Escolha...</option>
                         @foreach ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                         @endforeach
@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select id="status" name="status" class="form-control">
-                        @foreach ($status as $field => $legenda)
+                        @foreach ($status_list as $field => $legenda)
                             <option value="{{ $field }}">
                                 {{ $legenda }}
                             </option>

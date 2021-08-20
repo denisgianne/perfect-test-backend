@@ -10,6 +10,14 @@ class Customer extends Model
 
     public function sales()
     {
-        return $this->hasMany(Sale::class, 'customer_id');
+        return $this->hasMany(Sale::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::deleting(function ($model) {
+            $model->sales()->delete();
+        });
     }
 }

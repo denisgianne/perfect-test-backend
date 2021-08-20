@@ -1,29 +1,46 @@
 @extends('base.layout')
 
 @section('content')
-    <h1>Listagem de vendas</h1>
 
-
-
-    <div class='card mt-3'>
+    <h1>Visualizar Cliente</h1>
+    <div class='card'>
         <div class='card-body'>
-            <h5 class="card-title mb-5">Vendas
-                <a href='{{ route('sales.create') }}' class='btn btn-secondary float-right btn-sm rounded-pill'><i
-                        class='fa fa-plus'></i> Nova venda</a>
-            </h5>
+
+            <h5 class='my-5'>Informações do cliente</h5>
+
+            @include('base.errors')
+
+
+            <dl class="row">
+                <dt class="col-sm-3">Código</dt>
+                <dd class="col-sm-9">{{ $customer->id }}</dd>
+
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">{{ $customer->name }}</dd>
+
+                <dt class="col-sm-3">CPF</dt>
+                <dd class="col-sm-9">{{ $customer->cpf }}</dd>
+
+                <dt class="col-sm-3">Data de cadastro</dt>
+                <dd class="col-sm-9">{{ $customer->created_at->format('d/m/Y H\hi') }}</dd>
+
+                @if ($customer->created_at != $customer->updated_at)
+                    <dt class="col-sm-3">Última alteração</dt>
+                    <dd class="col-sm-9">{{ $customer->updated_at->format('d/m/Y H\hi') }}</dd>
+                @endif
+            </dl>
+
+            <h5 class='my-5'>Vendas para este cliente</h5>
+
             <table class='table'>
                 <tr>
-                    <th scope="col">Cliente</th>
                     <th scope="col">Data</th>
                     <th scope="col">Valor</th>
                     <th scope="col">Status</th>
                     <th scope="col" class="text-center">Ações</th>
                 </tr>
-                @foreach ($sales as $sale)
+                @foreach ($customer->sales as $sale)
                     <tr>
-                        <td>
-                            {{ $sale->customer->name }}
-                        </td>
                         <td>
                             {{ $sale->date->format('d/m/Y') }}
                         </td>
@@ -34,7 +51,6 @@
                             {{ $sale->status_label }}
                         </td>
                         <td>
-
                             <div class="row">
                                 <div class="col">
                                     <a href='{{ route('sales.show', $sale->id) }}' class='btn btn-success'>
@@ -62,10 +78,5 @@
             </table>
 
         </div>
-        <div class="card-footer">
-            {{ $sales->links() }}
-        </div>
     </div>
-
-
 @endsection

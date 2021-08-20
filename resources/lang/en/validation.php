@@ -186,6 +186,14 @@ return [
         'description' => 'descrição',
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
+
+        'qty'           => 'quantidade',
+        'discount_type' => 'tipo de desconto',
+        'discount'      => 'desconto',
+        'price'         => 'preço',
+        'product_id'    => 'código do produto',
+        'customer_id'   => 'código do cliente',
+        'sale_id'       => 'código da venda',
     ],
 
 ];

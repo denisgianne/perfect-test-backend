@@ -21,7 +21,7 @@ Route::resources([
     'products' => 'ProductController',
     'sales' => 'SaleController',
     // 'customer.sales' => 'CustomerSaleController',
-    'sale.products' => 'SaleProductController',
+    'sale.product' => 'SaleProductController',
 ]);
 
 // nested

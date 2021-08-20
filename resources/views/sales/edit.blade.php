@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <label for="status">Status da venda</label>
                     <select id="status" name="status" class="form-control">
-                        @foreach ($status as $field => $legenda)
+                        @foreach ($sale->status_list as $field => $legenda)
                             <option value="{{ $field }}" {{ $field == $sale->status ? 'selected' : '' }}>
                                 {{ $legenda }}
                             </option>
@@ -47,33 +47,25 @@
             <table class='table'>
                 <thead>
                     <tr>
-                        <th scope="col">
-                            Produto
-                        </th>
+                        <th scope="col">Produto</th>
                         <th scope="col">Qtd</th>
                         <th scope="col">Preço</th>
-                        <th>Desconto</th>
-                        <th scope="col">
-                            Total
-                        </th>
-                        <th scope="col" class="text-center">
-                            Ações
-                        </th>
+                        <th scope="col">Desconto</th>
+                        <th scope="col">Total</th>
+                        <th scope="col" class="text-center">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php($sums = ['qty' => 0, 'total' => 0])
                     @foreach ($sale->products as $item)
                         <tr>
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->qty }}</td>
                             <td>{{ number_format($item->product->price, 2, ',', '.') }}</td>
-                            <td>{{ !empty($item->discount) ? ($item->discount_type == 'percentage' ? '- R$ ' . $item->discount : $item->discount . '%') : '' }}
+                            <td>{{ !empty($item->discount) ? ($item->discount_type == 'value' ? '- R$ ' . $item->discount : $item->discount . '%') : '' }}
                             </td>
                             <td>R$ {{ number_format($item->total, 2, ',', '.') }}</td>
                             <td>
-                                <form action="{{ route('sale.products.destroy', [$sale->id, $item->id]) }}"
-                                    method="post">
+                                <form action="{{ route('sale.product.destroy', [$sale->id, $item->id]) }}" method="post">
                                     @csrf()
                                     @method('DELETE')
                                     <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i> </button>
@@ -85,8 +77,8 @@
                 <tfoot>
                     <tr>
                         <td>&nbsp;</td>
-                        <td>&nbsp;</td>
                         <td>{{ $sale->products->sum('qty') }}</td>
+                        <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>R$ {{ number_format($sale->products->sum('total'), 2, ',', '.') }}</td>
                         <td>&nbsp;</td>
@@ -95,12 +87,8 @@
             </table>
 
             <hr />
-            <form action="{{ route('sales.update', $sale->id) }}" method="POST">
+            <form action="{{ route('sale.product.store', $sale->id) }}" method="POST">
                 @csrf()
-                @method('PUT')
-
-
-
                 <div class="form-group">
                     <label for="product_id">Product</label>
                     <select id="product_id" name="product_id" class="form-control">

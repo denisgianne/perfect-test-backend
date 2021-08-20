@@ -85,7 +85,8 @@
                                     <form action="{{ route('sales.destroy', $sale->id) }}" method="post">
                                         @csrf()
                                         @method('DELETE')
-                                        <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
+                                        <button type="submit" class='btn btn-danger float-none'> <i
+                                                class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -107,45 +108,25 @@
                         Status
                     </th>
                     <th scope="col">
-                        Quantidade
+                        Vendas
                     </th>
                     <th scope="col">
                         Valor Total
                     </th>
                 </tr>
-                <tr>
-                    <td>
-                        Vendidos
-                    </td>
-                    <td>
-                        100
-                    </td>
-                    <td>
-                        R$ 100,00
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Cancelados
-                    </td>
-                    <td>
-                        120
-                    </td>
-                    <td>
-                        R$ 100,00
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Devoluções
-                    </td>
-                    <td>
-                        120
-                    </td>
-                    <td>
-                        R$ 100,00
-                    </td>
-                </tr>
+                @foreach ($sales_by_status as $sale)
+                    <tr>
+                        <td>
+                            {{ $sale->status_label }}
+                        </td>
+                        <td>
+                            {{ $sale->qty }}
+                        </td>
+                        <td>
+                            R$ {{ number_format($sale->total, 2, ',', '.') }}
+                        </td>
+                    </tr>
+                @endforeach
             </table>
         </div>
     </div>
@@ -162,12 +143,12 @@
                         Produto
                     </th>
                     <th scope="col">
-                        Data
+                        Cadastro
                     </th>
                     <th scope="col">
                         Valor
                     </th>
-                    <th scope="col" colspan="2" class="text-center">
+                    <th scope="col" class="text-center">
                         Ações
                     </th>
                 </tr>
@@ -183,17 +164,27 @@
                             R$ {{ number_format($product->price, 2, ',', '.') }}
                         </td>
                         <td>
+                            <div class="row">
+                                <div class="col">
+                                    <a href='{{ route('products.show', $product->id) }}' class='btn btn-success'>
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href='{{ route('products.edit', $product->id) }}' class='btn btn-primary'>
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
 
-                            <a href='{{ route('products.edit', $product->id) }}' class='btn btn-primary'> <i
-                                    class="fas fa-pencil-alt"></i> </a>
-                        </td>
-                        <td>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="post">
-                                @csrf()
-                                @method('DELETE')
-                                <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -213,13 +204,15 @@
                         Cliente
                     </th>
                     <th scope="col">
-                        E-mail
+                        Email
                     </th>
                     <th scope="col">
-                        Data
+                        Cadastro
                     </th>
-
-                    <th scope="col" colspan="2" class="text-center">
+                    <th scope="col">
+                        Vendas
+                    </th>
+                    <th scope="col" class="text-center">
                         Ações
                     </th>
                 </tr>
@@ -232,20 +225,33 @@
                             {{ $customer->email }}
                         </td>
                         <td>
-                            {{ $customer->created_at->format('d/m/Y H\hi') }}
+                            {{ $customer->created_at->format('d/m/Y') }}
+                        </td>
+                        <td class="text-center">
+                            {{ $customer->sales->count() }}
                         </td>
                         <td>
-                            <a href='{{ route('customers.edit', $customer->id) }}' class='btn btn-primary'>
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
-                                @csrf()
-                                @method('DELETE')
-                                <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
+
+                            <div class="row">
+                                <div class="col">
+                                    <a href='{{ route('customers.show', $customer->id) }}' class='btn btn-success'>
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href='{{ route('customers.edit', $customer->id) }}' class='btn btn-primary'>
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

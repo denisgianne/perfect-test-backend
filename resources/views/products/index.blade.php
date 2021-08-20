@@ -17,12 +17,12 @@
                         Produto
                     </th>
                     <th scope="col">
-                        Data
+                        Cadastro
                     </th>
                     <th scope="col">
                         Valor
                     </th>
-                    <th scope="col" colspan="2" class="text-center">
+                    <th scope="col" class="text-center">
                         Ações
                     </th>
                 </tr>
@@ -38,17 +38,27 @@
                             R$ {{ number_format($product->price, 2, ',', '.') }}
                         </td>
                         <td>
+                            <div class="row">
+                                <div class="col">
+                                    <a href='{{ route('products.show', $product->id) }}' class='btn btn-success'>
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href='{{ route('products.edit', $product->id) }}' class='btn btn-primary'>
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="post">
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
 
-                            <a href='{{ route('products.edit', $product->id) }}' class='btn btn-primary'> <i
-                                    class="fas fa-pencil-alt"></i> </a>
-                        </td>
-                        <td>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="post">
-                                @csrf()
-                                @method('DELETE')
-                                <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

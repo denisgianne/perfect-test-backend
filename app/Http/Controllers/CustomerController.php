@@ -12,9 +12,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $data = [];
-        $data['customers'] = Customer::paginate(15);
-        return view('customers.index', $data);
+        $customers = Customer::paginate(15);
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -31,21 +30,22 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->cpf = preg_replace('/[^\d]/', '', $request->cpf);
-        $validate = $request->validate([
+        $request->validate([
             'name'  => ['required', 'string', 'min:2'],
             'email' => ['required', 'unique:customers'],
-            'cpf'   => ['required', 'min:11']
+            'cpf'   => ['required', 'unique:customers', 'min:11']
         ]);
         if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
             // não adiciona sem email
         }
         $customer = Customer::create([
-            'name' => $request->name,
+            'name'  => $request->name,
             'email' => $request->email,
-            'cpf' => $request->cpf,
+            'cpf'   => $request->cpf,
         ]);
 
-        dd($customer);
+        // dd($customer);
+        return redirect()->route('customers.show', $customer);
     }
 
     /**
@@ -54,16 +54,16 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return view('customers.show', $customer);
+        return view('customers.show', compact('customer'));
     }
 
     /**
      * Show the form for editing the specified resource.
      * @param  int  $id
      */
-    public function edit($id)
+    public function edit(Customer $customer)
     {
-        //
+        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -71,9 +71,26 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $request->cpf = preg_replace('/[^\d]/', '', $request->cpf);
+
+        $request->validate([
+            'name'  => ['required', 'string', 'min:2'],
+            'email' => ['required', 'unique:customers'],
+            'cpf'   => ['required', 'min:11']
+        ]);
+        if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            // não adiciona sem email
+        }
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'cpf' => $request->cpf,
+        ]);
+
+        // dd($customer);
+        return redirect()->route('customers.show', $customer);
     }
 
     /**
@@ -82,8 +99,13 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    // public function destroy(Customer $customer)
+    public function destroy(Customer $customer)
     {
-        //
+        foreach ($customer->sales as $sale) {
+            $sale->delete();
+        };
+        $customer->delete();
+        return redirect()->route('customers.index');
     }
 }

@@ -14,9 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = [];
-        $data['products'] = Product::paginate(15);
-        return view('products.index', $data);
+        $products = Product::paginate(15);
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -31,9 +30,6 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -42,22 +38,16 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
         ]);
-
-        dd($product);
+        return redirect()->route('products.show', $product);
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      * Recebe o parâmetro do id e injeta no modelo de Product
      */
     public function show(Product $product)
     {
-        echo 'show';
-        dd($product->sales()->get());
-        // return view('products.view', ['product' => $product]);
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -68,14 +58,13 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', ['product' => $product]);
+        return view('products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  product  \App\Product
      * @return \Illuminate\Http\Response
      */
     public function update(Product $product, Request $request)
@@ -85,7 +74,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'price' => $request->price,
         ]);
-        dd($product);
+        return redirect()->route('products.show', $product);
     }
 
     /**

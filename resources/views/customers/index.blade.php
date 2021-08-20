@@ -20,9 +20,12 @@
                         Email
                     </th>
                     <th scope="col">
-                        Data
+                        Cadastro
                     </th>
-                    <th scope="col" colspan="2" class="text-center">
+                    <th scope="col">
+                        Vendas
+                    </th>
+                    <th scope="col" class="text-center">
                         Ações
                     </th>
                 </tr>
@@ -37,18 +40,31 @@
                         <td>
                             {{ $customer->created_at->format('d/m/Y') }}
                         </td>
-                        <td>
-
-                            <a href='{{ route('customers.edit', $customer->id) }}' class='btn btn-primary'> <i
-                                    class="fas fa-pencil-alt"></i> </a>
+                        <td class="text-center">
+                            {{ $customer->sales->count() }}
                         </td>
                         <td>
-                            <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
-                                @csrf()
-                                @method('DELETE')
-                                <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
+
+                            <div class="row">
+                                <div class="col">
+                                    <a href='{{ route('customers.show', $customer->id) }}' class='btn btn-success'>
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href='{{ route('customers.edit', $customer->id) }}' class='btn btn-primary'>
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <form action="{{ route('customers.destroy', $customer->id) }}" method="post">
+                                        @csrf()
+                                        @method('DELETE')
+                                        <button type="submit" class='btn btn-danger'> <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
