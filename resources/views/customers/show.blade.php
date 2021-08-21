@@ -28,6 +28,9 @@
                     <dt class="col-sm-3">Última alteração</dt>
                     <dd class="col-sm-9">{{ $customer->updated_at->format('d/m/Y H\hi') }}</dd>
                 @endif
+
+                <dt class="col-sm-3">Total em vendas</dt>
+                <dd class="col-sm-9">R$ {{ number_format($customer->sales->sum('total'), 2, ',', '.') }}</dd>
             </dl>
 
             <h5 class='my-5'>Vendas para este cliente</h5>

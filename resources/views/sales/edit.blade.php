@@ -60,7 +60,7 @@
                         <tr>
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->product->price, 2, ',', '.') }}</td>
+                            <td>{{ number_format($item->price, 2, ',', '.') }}</td>
                             <td>{{ !empty($item->discount) ? ($item->discount_type == 'value' ? '- R$ ' . $item->discount : $item->discount . '%') : '' }}
                             </td>
                             <td>R$ {{ number_format($item->total, 2, ',', '.') }}</td>
