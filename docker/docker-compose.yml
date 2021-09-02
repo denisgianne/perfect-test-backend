@@ -25,7 +25,6 @@ services:
       - mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    plataform: linux/x86_64
     container_name: perfectpay_phpmyadmin
     environment:
       - PMA_ARBITRARY=1
